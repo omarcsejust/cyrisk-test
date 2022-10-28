@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import Scan
+from tags.serializers import TagSerializer
 
 
 class AddScanSerializer(serializers.Serializer):
@@ -13,6 +14,8 @@ class AddScanSerializer(serializers.Serializer):
 
 
 class ScanSerializer(serializers.ModelSerializer):
+    tags = TagSerializer(read_only=True, many=True)
+
     class Meta:
         model = Scan
         fields = '__all__'

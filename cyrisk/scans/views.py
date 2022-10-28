@@ -6,6 +6,7 @@ from rest_framework.pagination import PageNumberPagination
 from hosts.models import Host
 from .models import Scan
 from .serializers import *
+from .background_analyzer import analyze
 
 
 class ScanAPIView(APIView, PageNumberPagination):
@@ -44,18 +45,28 @@ class ScanAPIView(APIView, PageNumberPagination):
 
             scan = Scan.objects.filter(host=host)
             if scan:
-                # scan exist
+                # scan already exists
                 serializer = ScanSerializer(scan[0])
                 return Response(serializer.data, status=status.HTTP_200_OK)
             else:
-                # create & trigger background task
+                # create scan & trigger background task
                 new_scan = Scan.objects.create(host=host)
                 serializer = ScanSerializer(new_scan)
+                analyze(new_scan.id, host.domain)
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
 
         return Response(add_scan_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, pk=None, format=None):
-        return Response({})
+        scan_id = pk
+        try:
+            scan = Scan.objects.get(pk=scan_id)
+        except Scan.DoesNotExist:
+            scan = None
+        if not scan:
+            return Response({'message': 'Scan not found!'}, status=status.HTTP_404_NOT_FOUND)
+
+        scan.delete()
+        return Response({'message': 'Scan deleted successfully'}, status=status.HTTP_204_NO_CONTENT)
 
 
