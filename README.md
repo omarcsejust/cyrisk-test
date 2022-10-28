@@ -1,7 +1,7 @@
-##Create virtual environment for windows
+## Create virtual environment for windows
 > python -m venv venv
 
-##Activate virtual environment
+## Activate virtual environment
 > venv\Scripts\activate.bat
 
 ## Now go to Inside cyrisk folder and execute the following commands
