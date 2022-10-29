@@ -26,7 +26,7 @@ class TagAPIView(APIView, PageNumberPagination):
             # end-point url: /tags/
             tags = Tag.objects.all()
             res = self.paginate_queryset(tags, request, view=self)
-            serializer = TagSerializer(res, many=True)
+            serializer = TagSerializerCalc(res, many=True)
             return self.get_paginated_response(serializer.data)
             # return Response(serializer.data, status=status.HTTP_200_OK)
 

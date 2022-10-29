@@ -15,7 +15,8 @@ class TagSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Tag
-        fields = ['name', 'created', 'categories', 'versions']
+        # fields = ['id', 'name', 'created', 'categories', 'versions']
+        fields = '__all__'
 
 
 class TagSerializerCalc(serializers.ModelSerializer):
@@ -32,12 +33,10 @@ class TagSerializerCalc(serializers.ModelSerializer):
     def get_scans_count(self, obj):
         return len(obj.scan_set.all())
 
-    def get_versions_count(self, obj):
+    def get_hosts_count(self, obj):
         # TODO:: have plan to do it later
         pass
 
     class Meta:
         model = Tag
-        fields = ['name', 'created', 'categories', 'versions', 'found_in_scans_count']
-
-
+        fields = '__all__'  # all means --> additional calculated fields also
