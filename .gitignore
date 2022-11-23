@@ -9,6 +9,9 @@ ENV/
 /__pycache__/
 /__pycache__
 __pycache__/
+cyrisk/hosts/__pycache__/
+cyrisk/scans/__pycache__/
+cyrisk/scans/__pycache__/
 
 # DB Data
 data/
