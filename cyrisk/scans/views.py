@@ -43,6 +43,7 @@ class ScanAPIView(APIView, PageNumberPagination):
             if not host:
                 return Response({'message': 'Host not found!'}, status=status.HTTP_404_NOT_FOUND)
 
+            # host --> scan : One-to-One, make it One-to-Many
             scan = Scan.objects.filter(host=host)
             if scan:
                 # scan already exists
