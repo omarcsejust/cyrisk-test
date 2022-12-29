@@ -42,10 +42,13 @@ INSTALLED_APPS = [
     'hosts',
     'scans',
     'tags',
+    'api',
+    'dj_channels_demo',
 
     # Other Frameworks/Apps
     'rest_framework',
     'background_task',
+    'channels',
 
 ]
 
@@ -78,6 +81,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'cyrisk.wsgi.application'
+# ASGI_APPLICATION = 'cyrisk.asgi.application'
 
 
 # Database
@@ -100,6 +104,16 @@ DATABASES = {
 #         'PORT': 5432,
 #     }
 # }
+
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379/1",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    }
+}
 
 
 # Password validation

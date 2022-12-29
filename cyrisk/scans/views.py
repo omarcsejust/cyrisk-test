@@ -6,7 +6,7 @@ from rest_framework.pagination import PageNumberPagination
 from hosts.models import Host
 from .models import Scan
 from .serializers import *
-from .background_analyzer import analyze
+from .background_analyzer import analyze, publish_event
 
 
 class ScanAPIView(APIView, PageNumberPagination):
@@ -45,6 +45,8 @@ class ScanAPIView(APIView, PageNumberPagination):
 
             # host --> scan : One-to-One, make it One-to-Many
             scan = Scan.objects.filter(host=host)
+            print("event publishing...........")
+            publish_event()
             if scan:
                 # scan already exists
                 serializer = ScanSerializer(scan[0])
@@ -69,5 +71,27 @@ class ScanAPIView(APIView, PageNumberPagination):
 
         scan.delete()
         return Response({'message': 'Scan deleted successfully'}, status=status.HTTP_204_NO_CONTENT)
+
+
+class ApiTestView(APIView):
+    def get(self, request, *args, **kwargs):
+        print(request.data)
+        print(args)
+        print(kwargs)
+        return Response({'msg': 'Test api'}, status.HTTP_200_OK)
+
+    def post(self, request, *args, **kwargs):
+        print(request.data)
+        print(args)
+        print(kwargs)
+        serializer = ApiTestSerializer(data=request.data)
+        if serializer.is_valid():
+            print("valid")
+            print(serializer.data)
+            print(serializer.data.get('is_active'))
+        else:
+            print(serializer.errors)
+            return Response({'msg': serializer.errors}, status.HTTP_200_OK)
+        return Response({'msg': 'Test api'}, status.HTTP_200_OK)
 
 

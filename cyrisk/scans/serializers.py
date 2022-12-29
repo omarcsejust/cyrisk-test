@@ -21,3 +21,7 @@ class ScanSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class ApiTestSerializer(serializers.Serializer):
+    is_active = serializers.BooleanField(required=False, default=False)
+
+

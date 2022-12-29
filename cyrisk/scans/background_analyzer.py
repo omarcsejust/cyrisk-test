@@ -5,11 +5,14 @@ from scans.models import Scan
 import json
 from django.db.models import Q
 
+from django_redis import get_redis_connection
+
 
 @background(schedule=60)
 def analyze(scan_id, domain):
     error_msg = None
     scan = None
+    publish_event()
     try:
         scan = Scan.objects.get(pk=scan_id)
         scan.phase = "Running"
@@ -59,5 +62,14 @@ def analyze(scan_id, domain):
                 print("Error Message: ", str(e))
 
 
-
+def publish_event():
+    print("eventttttttttttttttt")
+    event = {
+        "name": "Omar",
+        "id": 123,
+        "message": "This is a dummy message"
+    }
+    connection = get_redis_connection("default")
+    payload = json.dumps(event)
+    connection.publish("events", payload)
 
