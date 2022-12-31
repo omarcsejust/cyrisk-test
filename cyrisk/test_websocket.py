@@ -29,8 +29,9 @@ async def process_events():
     pubsub = redis.pubsub()
     await pubsub.subscribe("events")
     async for message in pubsub.listen():
-        payload = message["data"].decode()
-        websockets.broadcast(set(CONNECTIONS), payload)
+        if type(message["data"]) is not int:
+            payload = message["data"].decode()
+            websockets.broadcast(set(CONNECTIONS), payload)
 
 async def main():
     async with websockets.serve(handler, "localhost", 8888):

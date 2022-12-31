@@ -3,6 +3,7 @@ venv/
 .venv/*
 venv/*
 ENV/
+cyrisk_venv/*
 
 .idea/*
 
